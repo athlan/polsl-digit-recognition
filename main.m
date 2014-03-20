@@ -10,9 +10,9 @@ images = images';
 img = images(1:1,:);
 img = vec2mat(img, 28)';
 
-% Add padding - +2 pixels each side to get 32x32 images
+% Add padding - +4 pixels each side to get 36x36 images
 % from 28x28 images
-img = padarray(img, [2 2]);
+img = padarray(img, [4 4]);
 
 % display image
 imshow(img);
