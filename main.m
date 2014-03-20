@@ -1,9 +1,17 @@
-% Change the filenames if you've saved the files under different names
-% On some platforms, the files might be saved as 
-% train-images.idx3-ubyte / train-labels.idx1-ubyte
 images = loadMNISTImages('dataset/mnist/train-images-idx3-ubyte');
 labels = loadMNISTLabels('dataset/mnist/train-labels-idx1-ubyte');
- 
-% We are using display_network from the autoencoder code
-display(images(:,1:3)); % Show the first 3 images
+
+% now images is matrix 784 (28x28) rows and 60k cols
+% we should transposite matrix to get images as rows instead of columns
+images = images'; 
+
+% TEST
+% cut first row and translate it into matrix
+img = images(1:1,:);
+img = vec2mat(img, 28)';
+
+% display image
+imshow(img);
+
+% display first 10 elements from label matrix
 disp(labels(1:10));
