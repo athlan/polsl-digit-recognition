@@ -6,3 +6,4 @@
 addpath dataset
 addpath lib
 addpath src
+addpath examples
