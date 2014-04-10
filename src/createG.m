@@ -7,7 +7,7 @@ function [ G ] = createG( H, I, radius )
     % this is temporary mock code:
     imageHeight = size(I, 1);
     imageWidth = size(I, 2);
-    G(1,numberOfMasks, imageHeight - radius*2,imageWidth - radius*2) = 0; % mock
+    G(1,numberOfMasks, imageHeight,imageWidth) = 0; % mock
 
 end
 

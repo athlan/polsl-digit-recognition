@@ -4,8 +4,10 @@ const_image_y = 28;
 const_imageDatasetCount = 60000;
 
 const_r = 2;
-const_F_windowSize_x = 3;
-const_F_windowSize_y = 3;
+const_v_x = 3;
+const_v_y = 3;
+const_u_x = 3;
+const_u_y = 3;
 const_F_fi = 1;
 
 const_matrixI_x = 36;
@@ -57,15 +59,15 @@ for j=1:10,
     G_minus = createG(H, I_minus, const_r);
     
     if(const_checkAsserts)
-        assertSize = [1, const_matrixH_count, const_matrixI_x - const_r*2, const_matrixI_y - const_r*2];
+        assertSize = [1, const_matrixH_count, const_matrixI_x, const_matrixI_y];
         assert(all(size(G_plus) == assertSize), ...
             'Check G matrix dimensions. Should be [%dx%d x %dx%d], but was [%dx%d x %dx%d]', ...
             assertSize, size(G_plus));
     end
     
     % create Q matricies
-    Q_plus = createQ(I_plus, G_plus);
-    Q_minus = createQ(I_minus, G_minus);
+    Q_plus = createQ(I_plus, G_plus, const_r);
+    Q_minus = createQ(I_minus, G_minus, const_r);
     
     if(const_checkAsserts)
         assertSize = [1, const_matrixH_count, const_matrixI_x - const_r*2, const_matrixI_y - const_r*2];
@@ -75,15 +77,15 @@ for j=1:10,
     end
     
     % create F (features) matricies
-    F_plus = createF(Q_plus);
-    F_minus = createF(Q_minus);
+    F_plus = createF(Q_plus, const_v_x, const_v_y, const_u_x, const_u_y, const_F_fi, 0);
+    F_minus = createF(Q_minus, const_v_x, const_v_y, const_u_x, const_u_y, const_F_fi, 1);
     
-    %if(const_checkAsserts)
-    %    assertSize = [1, const_matrixH_count, const_matrixH_x + const_r*2, const_matrixH_x + const_r*2];
-    %    assert(all(size(F_plus) == assertSize), ...
-    %        'Check F matrix dimensions. Should be [%dx%d x %dx%d], but was [%dx%d x %dx%d]', ...
-    %        assertSize, size(F_plus));
-    %end
+    if(const_checkAsserts)
+        assertSize = [1, const_matrixH_count, floor((size(Q_plus,3) - const_v_x - 1) / const_u_x), floor((size(Q_plus,3) - const_v_y - 1) / const_u_y)];
+        assert(all(size(F_plus) == assertSize), ...
+            'Check F matrix dimensions. Should be [%dx%d x %dx%d], but was [%dx%d x %dx%d]', ...
+            assertSize, size(F_plus));
+    end
     
     % TODO: here the F matrix should be saved
 end
