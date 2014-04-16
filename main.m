@@ -19,6 +19,9 @@ const_matrixH_y = 5;
 const_checkAsserts = true;
 % end of constants
 
+F_x = floor(((const_matrixI_x - const_r*2) - const_v_x) / const_u_x);
+F_y = floor(((const_matrixI_y - const_r*2) - const_v_y) / const_u_y);
+
 images = loadMNISTImages('dataset/mnist/train-images-idx3-ubyte');
 labels = loadMNISTLabels('dataset/mnist/train-labels-idx1-ubyte');
 
@@ -30,7 +33,9 @@ if(const_checkAsserts)
     assert(size(images, 1) == const_image_x * const_image_y, 'Check image dimensions (assume there are square). Should be %d, but was ', const_image_x * const_image_y, size(images, 1));
 end
 
-for j=1:10,
+F_result(imagesCount, F_x*F_y * const_matrixH_count * 2) = 0;
+
+for j=1:1,
     % select image (appropriate column)
     I_plus = images(:,j:j);
     
@@ -81,11 +86,15 @@ for j=1:10,
     F_minus = createF(Q_minus, const_v_x, const_v_y, const_u_x, const_u_y, const_F_fi, 1);
     
     if(const_checkAsserts)
-        assertSize = [1, const_matrixH_count, floor((size(Q_plus,3) - const_v_x - 1) / const_u_x), floor((size(Q_plus,3) - const_v_y - 1) / const_u_y)];
+        assertSize = [1, const_matrixH_count, F_x, F_y];
         assert(all(size(F_plus) == assertSize), ...
             'Check F matrix dimensions. Should be [%dx%d x %dx%d], but was [%dx%d x %dx%d]', ...
             assertSize, size(F_plus));
     end
     
-    % TODO: here the F matrix should be saved
+    % Aggregate results
+    %for i = 1:const_matrixH_count
+    %    F_result(i,:) = reshape(F_plus(1,i,:,:),1,[]);
+    %end
+    % TODO: here the F_result should be saved
 end
