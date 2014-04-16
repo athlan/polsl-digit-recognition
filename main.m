@@ -50,51 +50,59 @@ for j=1:1,
     I_minus = 1 - I_plus;
     
     % create mask H matricies
-    H = createH(const_matrixH_count, const_matrixH_x, const_matrixH_y);
+    H_masks = createH(const_matrixH_count, const_matrixH_x, const_matrixH_y);
     
     if(const_checkAsserts)
-        assertSize = [1, const_matrixH_count, const_matrixH_x, const_matrixH_y];
-        assert(all(size(H) == assertSize), ...
+        assertSize = [const_matrixH_count, const_matrixH_x, const_matrixH_y];
+        assert(all(size(H_masks) == assertSize), ...
             'Check H matrix dimensions. Should be [%dx%d x %dx%d], but was [%dx%d x %dx%d]', ...
-            assertSize, size(H));
+            assertSize, size(H_masks));
     end
     
-    % create G matricies
-    G_plus = createG(H, I_plus, const_r);
-    G_minus = createG(H, I_minus, const_r);
+    tmp_f = [];
     
-    if(const_checkAsserts)
-        assertSize = [1, const_matrixH_count, const_matrixI_x, const_matrixI_y];
-        assert(all(size(G_plus) == assertSize), ...
-            'Check G matrix dimensions. Should be [%dx%d x %dx%d], but was [%dx%d x %dx%d]', ...
-            assertSize, size(G_plus));
-    end
+    for h_idx = 1:const_matrixH_count % for each mask
+        H = squeeze(H_masks(h_idx, :, :));
+        
+        % create G matricies
+        G_plus = createG(H, I_plus, const_r);
+        G_minus = createG(H, I_minus, const_r);
+
+        if(const_checkAsserts)
+            assertSize = [const_matrixI_x, const_matrixI_y];
+            assert(all(size(G_plus) == assertSize), ...
+                'Check G matrix dimensions. Should be [%dx%d x %dx%d], but was [%dx%d x %dx%d]', ...
+                assertSize, size(G_plus));
+        end
+
+        % create Q matricies
+        Q_plus = createQ(I_plus, G_plus, const_r);
+        Q_minus = createQ(I_minus, G_minus, const_r);
+
+        if(const_checkAsserts)
+            assertSize = [const_matrixI_x - const_r*2, const_matrixI_y - const_r*2];
+            assert(all(size(Q_plus) == assertSize), ...
+                'Check Q matrix dimensions. Should be [%dx%d x %dx%d], but was [%dx%d x %dx%d]', ...
+                assertSize, size(Q_plus));
+        end
+
+        % create F (features) matricies
+        F_plus = createF(Q_plus, const_v_x, const_v_y, const_u_x, const_u_y, const_F_fi, 0);
+        F_minus = createF(Q_minus, const_v_x, const_v_y, const_u_x, const_u_y, const_F_fi, 1);
+
+        if(const_checkAsserts)
+            assertSize = [F_x, F_y];
+            assert(all(size(F_plus) == assertSize), ...
+                'Check F matrix dimensions. Should be [%dx%d x %dx%d], but was [%dx%d x %dx%d]', ...
+                assertSize, size(F_plus));
+        end
+        
+        % Aggregate features results
+        tmp_f = [tmp_f, F_plus(:)', F_minus(:)'];
+    end % for each mask
+    F_result(j,:) = tmp_f;
     
-    % create Q matricies
-    Q_plus = createQ(I_plus, G_plus, const_r);
-    Q_minus = createQ(I_minus, G_minus, const_r);
     
-    if(const_checkAsserts)
-        assertSize = [1, const_matrixH_count, const_matrixI_x - const_r*2, const_matrixI_y - const_r*2];
-        assert(all(size(Q_plus) == assertSize), ...
-            'Check Q matrix dimensions. Should be [%dx%d x %dx%d], but was [%dx%d x %dx%d]', ...
-            assertSize, size(Q_plus));
-    end
-    
-    % create F (features) matricies
-    F_plus = createF(Q_plus, const_v_x, const_v_y, const_u_x, const_u_y, const_F_fi, 0);
-    F_minus = createF(Q_minus, const_v_x, const_v_y, const_u_x, const_u_y, const_F_fi, 1);
-    
-    if(const_checkAsserts)
-        assertSize = [1, const_matrixH_count, F_x, F_y];
-        assert(all(size(F_plus) == assertSize), ...
-            'Check F matrix dimensions. Should be [%dx%d x %dx%d], but was [%dx%d x %dx%d]', ...
-            assertSize, size(F_plus));
-    end
-    
-    % Aggregate results
-    %for i = 1:const_matrixH_count
-    %    F_result(i,:) = reshape(F_plus(1,i,:,:),1,[]);
-    %end
     % TODO: here the F_result should be saved
+    %dlmwrite('features.txt', F_result);
 end
