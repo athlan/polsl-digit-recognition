@@ -35,6 +35,9 @@ end
 
 F_result(imagesCount, F_x*F_y * const_matrixH_count * 2) = 0;
 
+% create mask H matricies
+H_masks = createH(const_matrixH_count, const_matrixH_x, const_matrixH_y);
+
 for j=1:1,
     % select image (appropriate column)
     I_plus = images(:,j:j);
@@ -48,9 +51,6 @@ for j=1:1,
     
     % start algorithm here!
     I_minus = 1 - I_plus;
-    
-    % create mask H matricies
-    H_masks = createH(const_matrixH_count, const_matrixH_x, const_matrixH_y);
     
     if(const_checkAsserts)
         assertSize = [const_matrixH_count, const_matrixH_x, const_matrixH_y];
