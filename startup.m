@@ -3,7 +3,7 @@
 % WARGNING! Please note that Startup location should be set to the
 % projects folder.
 
-addpath dataset
-addpath lib
-addpath src
-addpath examples
+addpath(genpath('dataset'))
+addpath(genpath('lib'))
+addpath(genpath('src'))
+addpath(genpath('examples'))
