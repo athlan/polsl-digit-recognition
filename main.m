@@ -106,3 +106,7 @@ for j=1:1,
     % TODO: here the F_result should be saved
     %dlmwrite('features.txt', F_result);
 end
+
+trainingSetRatio = 0.7;
+classificationType = 'diagQuadratic';
+%[ CLASS, ERR, POSTERIOR, LOGP, COEF ] = classifyFeaturesIntoLabels(F_result, labels, trainingSetRatio, classificationType);
