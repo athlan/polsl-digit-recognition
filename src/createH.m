@@ -40,7 +40,7 @@ function [ H ] = createH( numberOfMasks, maskWidth, maskHeight )
     matrixH(14,:,:) = matrix14;
     matrix15 = rot90(matrix13);
     matrixH(15,:,:) =  matrix15;
-    matrix16 = rot90(matrix13, 3)
+    matrix16 = rot90(matrix13, 3);
     matrixH(16,:,:) = matrix16;
     
     
