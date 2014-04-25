@@ -4,8 +4,8 @@ const_image_y = 28;
 const_imageDatasetCount = 60000;
 
 const_r = 2;
-const_v_x = 3;
-const_v_y = 3;
+const_v_x = 8;
+const_v_y = 8;
 const_u_x = 3;
 const_u_y = 3;
 const_F_fi = 1;
