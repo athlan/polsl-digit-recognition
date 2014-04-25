@@ -19,8 +19,8 @@ const_matrixH_y = 5;
 const_checkAsserts = true;
 % end of constants
 
-F_x = floor(((const_matrixI_x - const_r*2) - const_v_x) / const_u_x);
-F_y = floor(((const_matrixI_y - const_r*2) - const_v_y) / const_u_y);
+F_x = floor(((const_matrixI_x - const_r*2) - const_v_x) / const_u_x) + 1;
+F_y = floor(((const_matrixI_y - const_r*2) - const_v_y) / const_u_y) + 1;
 
 images = loadMNISTImages('dataset/mnist/train-images-idx3-ubyte');
 labels = loadMNISTLabels('dataset/mnist/train-labels-idx1-ubyte');

@@ -2,8 +2,8 @@ function [ F ] = createF( Q, v_x, v_y, u_x, u_y, fi, fillEmptyCellsValue)
 %CREATEF Create features F[9x9] matrixies
 %   Detailed explanation goes here
 
-    matrixF_x = floor((size(Q,1) - v_x) / u_x);
-    matrixF_y = floor((size(Q,2) - v_y) / u_y);
+    matrixF_x = floor((size(Q,1) - v_x) / u_x) + 1;
+    matrixF_y = floor((size(Q,2) - v_y) / u_y) + 1;
     
     F(matrixF_x, matrixF_y) = 0;
     
