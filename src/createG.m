@@ -5,21 +5,17 @@ function [ G ] = createG( H, I, radius )
     
     imageHeight = size(I, 1);
     imageWidth = size(I, 2);
-    G(imageHeight,imageWidth) = 0; % mock
+    G = zeros(imageWidth, imageHeight);
       
     for i = 1+radius:imageWidth-radius
         for j = 1+radius:imageHeight-radius
             value = 0;
             for m = -radius:radius
                 for n = -radius:radius
-                    if m > 1 && n > 1
-                        value = value + H(m+radius+1,n+radius+1)*I(i+m,j+n);
-                    else 
-                        value = value + 0;
-                    end
+                        value = value + H(m+radius+1,n+radius+1)*I(i+m,j+n);                   
                 end
             end
-            G(i-radius, j-radius) = value;
+            G(i, j) = value;
         end
     end
 end
