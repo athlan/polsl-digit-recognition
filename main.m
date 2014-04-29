@@ -38,7 +38,9 @@ F_result(imagesCount, F_x*F_y * const_matrixH_count * 2) = 0;
 % create mask H matricies
 H_masks = createH(const_matrixH_count, const_matrixH_x, const_matrixH_y);
 
-for j=1:1,
+t0 = clock;
+j_max = imagesCount;
+for j=1:j_max,
     % select image (appropriate column)
     I_plus = images(:,j:j);
     
@@ -102,11 +104,14 @@ for j=1:1,
     end % for each mask
     F_result(j,:) = tmp_f;
     
-    
+    fprintf('Completed %d of %d (%.2f %%).\n', j, j_max, j/j_max*100);
     % TODO: here the F_result should be saved
     %dlmwrite('features.txt', F_result);
 end
 
-trainingSetRatio = 0.7;
-classificationType = 'diagQuadratic';
+fprintf('Completed\n');
+clearvars -except F_result labels
+
+%trainingSetRatio = 0.7;
+%classificationType = 'diagQuadratic';
 %[ CLASS, ERR, POSTERIOR, LOGP, COEF ] = classifyFeaturesIntoLabels(F_result, labels, trainingSetRatio, classificationType);
