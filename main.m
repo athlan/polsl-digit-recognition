@@ -32,8 +32,9 @@ if(const_checkAsserts)
     assert(imagesCount == const_imageDatasetCount, 'Check dataset cardinality. Should be %d, but was %d', const_imageDatasetCount, imagesCount);
     assert(size(images, 1) == const_image_x * const_image_y, 'Check image dimensions (assume there are square). Should be %d, but was ', const_image_x * const_image_y, size(images, 1));
 end
-
-F_result(imagesCount, F_x*F_y * const_matrixH_count * 2) = 0;
+%imagesCount = 10000;
+%labels = labels(1:imagesCount, :);
+F_result = zeros(imagesCount, F_x*F_y * const_matrixH_count * 2);
 
 % create mask H matricies
 H_masks = createH(const_matrixH_count, const_matrixH_x, const_matrixH_y);
@@ -103,8 +104,9 @@ for j=1:j_max,
         tmp_f = [tmp_f, F_plus(:)', F_minus(:)'];
     end % for each mask
     F_result(j,:) = tmp_f;
-    
+    if (mod(j, 100) == 0)  
     fprintf('Completed %d of %d (%.2f %%).\n', j, j_max, j/j_max*100);
+    end
     % TODO: here the F_result should be saved
     %dlmwrite('features.txt', F_result);
 end
@@ -112,6 +114,7 @@ end
 fprintf('Completed\n');
 clearvars -except F_result labels
 
-%trainingSetRatio = 0.7;
-%classificationType = 'diagQuadratic';
-%[ CLASS, ERR, POSTERIOR, LOGP, COEF ] = classifyFeaturesIntoLabels(F_result, labels, trainingSetRatio, classificationType);
+trainingSetRatio = 0.8;
+classificationType = 'diagQuadratic';
+%classificationType = 'quadratic';
+[ CLASS, ERR, POSTERIOR, LOGP, COEF ] = classifyFeaturesIntoLabels(F_result, labels, trainingSetRatio, classificationType);

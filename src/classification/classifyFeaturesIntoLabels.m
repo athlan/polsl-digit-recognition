@@ -13,23 +13,26 @@ function [ CLASS, ERR, POSTERIOR, LOGP, COEF ] = classifyFeaturesIntoLabels(F, l
     
     [trainingSetIndices,validatingSetIndices,testingSetIndices] = dividerand(size(F,1),trainingSetRatio,validatingSetRatio,testingSetRatio);
     
+    
     testingSetSize = numel(testingSetIndices);
     trainingSetSize = numel(trainingSetIndices);
     validatingSetSize = numel(validatingSetIndices);
     
-    testingSet(1:testingSetSize) = 0;
+    secondDmx = size(F, 2);
+    
+    testingSet = zeros(testingSetSize, secondDmx);
     %testingSetLabels(1:testingSetSize) = 0;
     for i = 1: testingSetSize
-        testingSet(i) = F(testingSetIndices(i));
+        testingSet(i, :) = F(testingSetIndices(i), :);
         %testingSetLabels(i) = labels(testingSetIndices(i));
     end
     
-    trainingSet(1:trainingSetSize) = 0;
-    trainingSetLabels(1:trainingSetSize) = 0;
+    trainingSet = zeros(trainingSetSize, secondDmx);
+    trainingSetLabels = zeros(trainingSetSize, 1);
     for i = 1: trainingSetSize
-        trainingSet(i) = F(trainingSetIndices(i));
-        trainingSetLabels(i) = labels(trainingSetIndices(i));
+        trainingSet(i, :) = F(trainingSetIndices(i), :);
+        trainingSetLabels(i, :) = labels(trainingSetIndices(i), :);
     end
     
-    [ CLASS, ERR, POSTERIOR, LOGP, COEF ] = classify(testingSet', trainingSet', trainingSetLabels, classificationType);
+    [ CLASS, ERR, POSTERIOR, LOGP, COEF ] = classify(testingSet, trainingSet, trainingSetLabels, classificationType);
 end
