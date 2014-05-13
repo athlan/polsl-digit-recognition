@@ -40,7 +40,7 @@ H_masks = createH(const_matrixH_count, const_matrixH_x, const_matrixH_y);
 
 t0 = clock;
 j_max = imagesCount;
-for j=1:j_max,
+for j=1:100,
     % select image (appropriate column)
     I_plus = images(:,j:j);
     
@@ -112,6 +112,6 @@ end
 fprintf('Completed\n');
 clearvars -except F_result labels
 
-%trainingSetRatio = 0.7;
-%classificationType = 'diagQuadratic';
-%[ CLASS, ERR, POSTERIOR, LOGP, COEF ] = classifyFeaturesIntoLabels(F_result, labels, trainingSetRatio, classificationType);
+trainingSetRatio = 0.7;
+classificationType = 'diagQuadratic';
+[ CLASS, ERR, POSTERIOR, LOGP, COEF ] = classifyFeaturesIntoLabels(F_result, labels, trainingSetRatio, classificationType);
