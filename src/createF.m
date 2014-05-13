@@ -21,8 +21,12 @@ function [ F ] = createF( Q, v_x, v_y, u_x, u_y, fi, fillEmptyCellsValue)
                 
             for M = 0:v_x-1,
                 for N = 0:v_y-1,
-                     W = ((abs(Q(u_x * X + M + 1, u_y * Y + N + 1))) ^ fi) / denominator_w;
-                     tmp = tmp + (W * (Q(u_x * X + M + 1, u_y * Y + N + 1)));
+                    if (denominator_w == 0)
+                        W = 0;
+                    else
+                        W = ((abs(Q(u_x * X + M + 1, u_y * Y + N + 1))) ^ fi) / denominator_w;
+                    end
+                    tmp = tmp + (W * (Q(u_x * X + M + 1, u_y * Y + N + 1)));
                 end
             end
 
