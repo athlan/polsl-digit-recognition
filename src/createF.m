@@ -17,8 +17,7 @@ function [ F ] = createF( Q, v_x, v_y, u_x, u_y, fi, fillEmptyCellsValue)
                     denominator_w = denominator_w + (abs(Q(u_x * X + S + 1, u_y* Y + T + 1))) ^ fi;
                 end
             end
-            if(denominator_w == 0) continue;
-                
+            
             for M = 0:v_x-1,
                 for N = 0:v_y-1,
                     if (denominator_w == 0)
