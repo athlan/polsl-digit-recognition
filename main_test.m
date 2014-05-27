@@ -37,8 +37,8 @@ end
 % create mask H matricies
 H_masks = createH(const_matrixH_count, const_matrixH_x, const_matrixH_y);
 
-F_result_train = runAlgorithm(images_train, H_masks, const_image_x, const_image_y, const_matrixI_x, const_matrixI_y, const_r, const_v_x, const_v_y, const_u_x, const_u_y, const_F_fi);
-F_result = runAlgorithm(images, H_masks, const_image_x, const_image_y, const_matrixI_x, const_matrixI_y, const_r, const_v_x, const_v_y, const_u_x, const_u_y, const_F_fi);
+F_result_train = runAlgorithmTest(images_train, H_masks, const_image_x, const_image_y, const_matrixI_x, const_matrixI_y, const_r, const_v_x, const_v_y, const_u_x, const_u_y, const_F_fi);
+F_result = runAlgorithmTest(images, H_masks, const_image_x, const_image_y, const_matrixI_x, const_matrixI_y, const_r, const_v_x, const_v_y, const_u_x, const_u_y, const_F_fi);
 
 fprintf('Completed\n');
 clearvars -except F_result F_result_train labels labels_train
